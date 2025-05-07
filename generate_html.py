@@ -72,3 +72,38 @@ print("✅ HTMLファイル(index.html)を作成しました！")
 =======
 print("✅ index.html を作成しました！")
 >>>>>>> ed36ecf (WIP: 一時コミット)
+
+# ① CSVを自動で生成する処理（ダミー例）
+import pandas as pd
+
+# ここでスクレイピングやAPI処理などでデータ取得
+data = {
+    "銘柄": ["A社", "B社"],
+    "配当利回り": [3.2, 4.1]
+}
+df = pd.DataFrame(data)
+df.to_csv("filtered_rimawari.csv", index=False)
+
+# ② HTML変換処理（既存の処理）
+df = pd.read_csv("filtered_rimawari.csv")
+html_table = df.to_html(index=False, classes="table", border=0, justify="center")
+html_page = f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>kabupicks - 高配当株リスト</title>
+  <style>
+    body {{ font-family: sans-serif; padding: 2rem; background-color: #f9f9f9; }}
+    h1 {{ text-align: center; }}
+    .table {{ width: 100%; border-collapse: collapse; background-color: white; }}
+  </style>
+</head>
+<body>
+  <h1>配当利回り3%以上の高配当株リスト</h1>
+  {html_table}
+</body>
+</html>"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_page)
+
